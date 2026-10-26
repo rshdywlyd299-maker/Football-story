@@ -1,1 +1,360 @@
 # Football-story
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أساطير كرة القدم - قصص LIFE</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- الهيدر -->
+    <header>
+        <div class="container">
+            <h1>⚽ أساطير كرة القدم</h1>
+            <p>قصص حياة أشهر لاعبي كرة القدم في العالم</p>
+        </div>
+    </header>
+
+    <!-- شريط البحث -->
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="ابحث عن لاعب...">
+    </div>
+
+    <!-- شبكة اللاعبين -->
+    <main class="container">
+        <div class="players-grid" id="playersGrid">
+            <!-- سيتم إضافة البطاقات هنا عبر JavaScript -->
+        </div>
+    </main>
+
+    <!-- النافذة المنبثقة (Modal) -->
+    <div class="modal" id="playerModal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeModal">&times;</span>
+            <img id="modalImage" src="" alt="">
+            <h2 id="modalName"></h2>
+            <p class="modal-info" id="modalInfo"></p>
+            <div class="modal-story" id="modalStory"></div>
+        </div>
+    </div>
+
+    <!-- الفوتر -->
+    <footer>
+        <p>© 2024 أساطير كرة القدم - جميع الحقوق محفوظة</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: #fff;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* الهيدر */
+header {
+    background: linear-gradient(135deg, #0f3460, #16537e);
+    padding: 50px 20px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    border-bottom: 4px solid #e94560;
+}
+
+header h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 10px rgba(233, 69, 96, 0.5);
+}
+
+header p {
+    font-size: 1.2rem;
+    color: #ccc;
+}
+
+/* شريط البحث */
+.search-bar {
+    text-align: center;
+    padding: 30px 20px;
+}
+
+.search-bar input {
+    width: 100%;
+    max-width: 500px;
+    padding: 15px 25px;
+    border-radius: 30px;
+    border: 2px solid #e94560;
+    background: #1a1a2e;
+    color: #fff;
+    font-size: 1rem;
+    outline: none;
+    transition: 0.3s;
+}
+
+.search-bar input:focus {
+    box-shadow: 0 0 20px rgba(233, 69, 96, 0.6);
+}
+
+/* شبكة اللاعبين */
+.players-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+    padding: 20px 0 60px;
+}
+
+/* بطاقة اللاعب */
+.player-card {
+    background: linear-gradient(145deg, #1e2749, #2a3a66);
+    border-radius: 20px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.4s, box-shadow 0.4s;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    border: 1px solid rgba(233, 69, 96, 0.3);
+}
+
+.player-card:hover {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 20px 40px rgba(233, 69, 96, 0.4);
+}
+
+.player-card img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    border-bottom: 3px solid #e94560;
+}
+
+.player-card .card-info {
+    padding: 20px;
+}
+
+.player-card h3 {
+    color: #e94560;
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+}
+
+.player-card p {
+    color: #bbb;
+    font-size: 0.95rem;
+}
+
+/* النافذة المنبثقة */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: linear-gradient(145deg, #1e2749, #2a3a66);
+    padding: 30px;
+    border-radius: 20px;
+    max-width: 700px;
+    width: 100%;
+    position: relative;
+    border: 2px solid #e94560;
+    animation: slideIn 0.4s ease;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    left: 20px;
+    font-size: 2rem;
+    color: #e94560;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.close-btn:hover {
+    color: #fff;
+    transform: rotate(90deg);
+}
+
+.modal-content img {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto 20px;
+    border: 4px solid #e94560;
+    box-shadow: 0 0 30px rgba(233, 69, 96, 0.5);
+}
+
+.modal-content h2 {
+    text-align: center;
+    color: #e94560;
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.modal-info {
+    text-align: center;
+    color: #ffd700;
+    font-weight: bold;
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+}
+
+.modal-story {
+    color: #ddd;
+    line-height: 1.9;
+    font-size: 1.05rem;
+    text-align: justify;
+    padding: 15px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 15px;
+    border-right: 4px solid #e94560;
+}
+
+/* الفوتر */
+footer {
+    background: #0f3460;
+    text-align: center;
+    padding: 25px;
+    color: #999;
+    border-top: 3px solid #e94560;
+}
+
+/* الجوال */
+@media (max-width: 600px) {
+    header h1 { font-size: 2rem; }
+    .modal-content img { width: 140px; height: 140px; }
+    .modal-content h2 { font-size: 1.5rem; }
+}
+// بيانات اللاعبين
+const players = [
+    {
+        name: "ليونيل ميسي",
+        info: "🇦🇷 الأرجنتين | مهاجم | 1987",
+        image: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=500",
+        story: "وُلد ليونيل ميسي في 24 يونيو 1987 في روزاريو بالأرجنتين. عانى في طفولته من نقص هرمون النمو، ما جعل أندية بلاده ترفض التعاقد معه بسبب تكلفة علاجه. سافر إلى إسبانيا وعمره 13 عاماً للانضمام إلى برشلونة، الذي وافق على تحمل تكاليف علاجه. تطوّر في أكاديمية لا ماسيا ليصبح أحد أفضل اللاعبين في التاريخ. فاز بـ 8 كرات ذهبية، و4 دوري أبطال أوروبا، وقاد الأرجنتين للفوز بكأس العالم 2022 في قصة إنسانية ملهمة عن الإصرار والتحدي."
+    },
+    {
+        name: "كريستيانو رونالدو",
+        info: "🇵🇹 البرتغال | مهاجم | 1985",
+        image: "https://images.unsplash.com/photo-1553778263-73a83bab9b0c?w=500",
+        story: "وُلد كريستيانو رونالدو في 5 فبراير 1985 في جزيرة ماديرا البرتغالية لعائلة فقيرة. بدأ مسيرته في نادي سبورتنغ لشبونة، ثم انتقل إلى مانشستر يونايتد عام 2003 حيث أصبح نجماً عالمياً تحت قيادة فيرغسون. انتقل إلى ريال مدريد عام 2009 ليصبح أسطورة النادي وأفضل هداف في تاريخه. ثم لعب ليوفنتوس وعاد لمانشستر يونايتد، قبل أن ينتقل للنصر السعودي. فاز بـ 5 كرات ذهبية و5 دوري أبطال أوروبا، وقاد البرتغال للفوز بيورو 2016. يُعرف بانضباطه الشديد وعمله الدؤوب."
+    },
+    {
+        name: "نيمار جونيور",
+        info: "🇧🇷 البرازيل | مهاجم | 1992",
+        image: "https://images.unsplash.com/photo-1517927033932-b3d18e61fb3a?w=500",
+        story: "وُلد نيمار دا سيلفا سانتوس في 5 فبراير 1992 في ساو باولو بالبرازيل. بدأ في أكاديمية سانتوس وأصبح نجماً صاعداً منذ صغره. انتقل إلى برشلونة عام 2013 حيث شكّل ثلاثياً مرعباً مع ميسي وسواريز وفاز بالثلاثية التاريخية 2015. ثم انتقل إلى باريس سان جيرمان عام 2017 بصفقة قياسية بلغت 222 مليون يورو، ليصبح أغلى لاعب في التاريخ. واجه إصابات عديدة لكنه بقي أحد أكثر اللاعبين موهبة في جيله. يمثل البرازيل في المحافل الدولية ويُعرف بمهاراته الفردية المذهلة."
+    },
+    {
+        name: "محمد صلاح",
+        info: "🇪🇬 مصر | مهاجم | 1992",
+        image: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=500",
+        story: "وُلد محمد صلاح في 15 يونيو 1992 في قرية نجريج بمحافظة الغربية المصرية. بدأ مسيرته في نادي المقاولون العرب، ثم انتقل إلى بازل السويسري. لعب لتشيلسي لكنه لم يحصل على فرصة، فانتقل إلى فيورنتينا ثم روما الإيطاليين حيث تألق. في 2017 انتقل إلى ليفربول ليصبح أسطورة النادي وهدافه التاريخي في الدوري الإنجليزي. فاز بدوري أبطال أوروبا 2019 والدوري الإنجليزي 2020، وحصل على الحذاء الذهبي الأوروبي مرات عدة. يُعتبر أفضل لاعب عربي في التاريخ ورمزاً للاجتهاد والإصرار."
+    },
+    {
+        name: "كيليان مبابي",
+        info: "🇫🇷 فرنسا | مهاجم | 1998",
+        image: "https://images.unsplash.com/photo-1626248801379-51a0748a5f96?w=500",
+        story: "وُلد كيليان مبابي في 20 ديسمبر 1998 في بوندي بفرنسا لأب مدرب كرة قدم وأم لاعبة كرة يد. بدأ في أكاديمية موناكو وسرعان ما لفت الأنظار بسرعته الخارقة. في 2017 انتقل إلى باريس سان جيرمان ليصبح أحد أفضل المهاجمين في العالم. قاد فرنسا للفوز بكأس العالم 2018 وهو بعمر 19 عاماً فقط، وسجل هاتريك في نهائي كأس العالم 2022 رغم خسارة اللقب. انتقل إلى ريال مدريد في 2024 محققاً حلم طفولته. يُعتبر خليفة ميسي ورونالدو وأحد أفضل لاعبي جيله."
+    },
+    {
+        name: "رونالدينيو",
+        info: "🇧🇷 البرازيل | مهاجم | 1980",
+        image: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=500",
+        story: "وُلد رونالدينيو غاوتشو في 21 مارس 1980 في بورتو أليغري بالبرازيل. بدأ في غريميو ثم انتقل إلى باريس سان جيرمان، قبل أن يصل إلى برشلونة عام 2003 حيث وصل إلى قمة مجده. أبدع بمهاراته الساحرة وابتسامته الدائمة التي جعلته محبوباً عالمياً. فاز بالكرة الذهبية 2005 ودوري أبطال أوروبا 2006 وكأس العالم 2002. لعب لاحقاً لميلان وعدة أندية أخرى. رغم تراجع مستواه في نهاية مسيرته، يبقى رمزاً للفرح والسحر في كرة القدم. سجن لفترة قصيرة في باراغواي بتهمة جواز سفر مزور، لكنه بقي محبوباً من الجماهير."
+    }
+];
+
+// عرض البطاقات
+function displayPlayers(playersList) {
+    const grid = document.getElementById('playersGrid');
+    grid.innerHTML = '';
+    
+    if (playersList.length === 0) {
+        grid.innerHTML = '<p style="text-align:center; grid-column:1/-1; color:#e94560; font-size:1.3rem;">لا يوجد لاعب بهذا الاسم 😕</p>';
+        return;
+    }
+    
+    playersList.forEach((player, index) => {
+        const card = document.createElement('div');
+        card.className = 'player-card';
+        card.innerHTML = `
+            <img src="${player.image}" alt="${player.name}" onerror="this.src='https://via.placeholder.com/300x280/1e2749/e94560?text=⚽'">
+            <div class="card-info">
+                <h3>${player.name}</h3>
+                <p>${player.info}</p>
+            </div>
+        `;
+        card.addEventListener('click', () => openModal(player));
+        grid.appendChild(card);
+    });
+}
+
+// فتح النافذة المنبثقة
+function openModal(player) {
+    document.getElementById('modalImage').src = player.image;
+    document.getElementById('modalImage').onerror = function() {
+        this.src = 'https://via.placeholder.com/180/1e2749/e94560?text=⚽';
+    };
+    document.getElementById('modalName').textContent = player.name;
+    document.getElementById('modalInfo').textContent = player.info;
+    document.getElementById('modalStory').textContent = player.story;
+    document.getElementById('playerModal').classList.add('active');
+}
+
+// إغلاق النافذة
+document.getElementById('closeModal').addEventListener('click', () => {
+    document.getElementById('playerModal').classList.remove('active');
+});
+
+document.getElementById('playerModal').addEventListener('click', (e) => {
+    if (e.target.id === 'playerModal') {
+        e.target.classList.remove('active');
+    }
+});
+
+// البحث
+document.getElementById('searchInput').addEventListener('input', (e) => {
+    const query = e.target.value.toLowerCase().trim();
+    const filtered = players.filter(p => 
+        p.name.toLowerCase().includes(query) || 
+        p.info.toLowerCase().includes(query)
+    );
+    displayPlayers(filtered);
+});
+
+// تحميل الصفحة
+displayPlayers(players);
